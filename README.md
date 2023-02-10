@@ -26,9 +26,9 @@
 
 ## Description
 
-- Internet retail, also known as e-commerce, is the largest sector of the electronics industry, having generated an estimated US$29 trillion in 2017 (Source: United Nations Conference on Trade and Development). E-commerce platforms like Shopify and WooCommerce provide a suite of services to businesses of all sizes. Due to the prevalence of these platforms, developers should understand the fundamental architecture of e-commerce sites.
+- MongoDB is a popular choice for many social networks due to its speed with large amounts of data and flexibility with unstructured data. Over the last part of this course, I have used several of the technologies that social networking platforms use in their full-stack applications. Because the foundation of these applications is data, it’s important that I understand how to build and structure the API first.
 
-- My task is to build the back end for an e-commerce site. I will be using Express.js API and configure it to use Sequelize to interact with a MySQL database.
+- My task is to build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. I will use Express.js for routing, a MongoDB database, and the Mongoose ODM. In addition to using the Express.js Links to an external site.and Mongoose Links to an external site.packages, I may also optionally use a JavaScript date library of my choice or the native JavaScript Date object to format timestamps.
 
 ## User Story
 
@@ -60,13 +60,18 @@ npm i
 
 ## Usage
 
+- Express.js
+- MongoDB
+- Mongoose
+
 ## Resources/Credit
 
 - Martin Cespedes - [Link to my Github](https://github.com/MartinCespedes)
 
 ## Features
 
--
+- MongoDB
+- Mongoose ODM
 
 ## Application Screenshot Preview (Insomnia)
 

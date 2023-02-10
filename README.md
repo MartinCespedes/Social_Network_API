@@ -30,12 +30,13 @@
 
 - My task is to build the back end for an e-commerce site. I will be using Express.js API and configure it to use Sequelize to interact with a MySQL database.
 
-### User Story
+## User Story
 
-````md
+```md
 AS A social media startup
 I WANT an API for my social network that uses a NoSQL database
 SO THAT my website can handle large amounts of unstructured data
+```
 
 ### Acceptance Criteria
 
@@ -74,4 +75,7 @@ npm i
 ##
 
 ![NOSQL-2]]()
-````
+
+```
+
+```

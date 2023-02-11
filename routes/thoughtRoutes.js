@@ -38,3 +38,35 @@ router.post('/', async (req, res) => {
       res.status(400).json({ message: error.message });
     }
   });
+
+  // Update a thought //
+router.patch('/:id', async (req, res) => {
+    try {
+      const updatedThought = await Thought.findByIdAndUpdate(
+        req.params.id,
+        { text: req.body.text },
+        { new: true }
+      );
+      if (!updatedThought) {
+        return res.status(404).json({ message: 'Thought not found' });
+      }
+      res.json(updatedThought);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
+  // Delete a thought //
+  router.delete('/:id', async (req, res) => {
+    try {
+      const deletedThought = await Thought.findByIdAndDelete(req.params.id);
+      if (!deletedThought) {
+        return res.status(404).json({ message: 'Thought not found' });
+      }
+      res.json({ message: 'Thought deleted' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
+  module.exports = router;

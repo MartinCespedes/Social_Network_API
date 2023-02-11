@@ -1,4 +1,5 @@
 const express = require("express");
+const app = express();
 const db = require("./config/connection");
 const routes = require("./routes");
 
@@ -12,7 +13,7 @@ const thoughtRoutes = require('./routes/thoughtRoutes');
 const reactionRoutes = require('./routes/reactionRoutes');
 const friendRoutes = require('./routes/friendRoutes');
 
-const app = express();
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

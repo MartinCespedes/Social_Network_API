@@ -36,3 +36,16 @@ router.put("/:id", (req, res) => {
       .then((reaction) => res.json(reaction))
       .catch((err) => res.status(400).json({ error: err.message }));
   });
+
+
+  // delete a reaction //
+router.delete("/:id", (req, res) => {
+    Reaction.findByIdAndRemove(req.params.id)
+      .then((reaction) => res.json({ message: "Reaction deleted." }))
+      .catch((err) => res.status(400).json({ error: err.message }));
+  });
+  
+  module.exports = router;
+
+
+  

@@ -48,3 +48,30 @@ router.post('/', async (req, res) => {
       res.status(400).json({ message: err.message });
     }
   });
+
+
+  // Delete a user //
+router.delete('/:id', getUser, async (req, res) => {
+    try {
+      await res.user.remove();
+      res.json({ message: 'Deleted This User' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+  
+  async function getUser(req, res, next) {
+    try {
+      user = await User.findById(req.params.id);
+      if (user == null) {
+        return res.status(404).json({ message: 'Cannot find user' });
+      }
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  
+    res.user = user;
+    next();
+  }
+  
+  module.exports = router;

@@ -28,3 +28,11 @@ router.post("/", (req, res) => {
       .then((reaction) => res.json(reaction))
       .catch((err) => res.status(400).json({ error: err.message }));
   });
+
+
+  // update an existing reaction //
+router.put("/:id", (req, res) => {
+    Reaction.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .then((reaction) => res.json(reaction))
+      .catch((err) => res.status(400).json({ error: err.message }));
+  });

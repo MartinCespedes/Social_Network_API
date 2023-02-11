@@ -24,3 +24,17 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// Create a new thought //
+router.post('/', async (req, res) => {
+    const thought = new Thought({
+      text: req.body.text,
+      author: req.body.author,
+    });
+    try {
+      const savedThought = await thought.save();
+      res.status(201).json(savedThought);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });

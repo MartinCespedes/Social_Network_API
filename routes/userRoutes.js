@@ -70,7 +70,7 @@ router.delete('/:id', getUser, async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
   
-    res.user = user;
+    res.user = User;
     next();
   }
   

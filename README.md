@@ -1,3 +1,11 @@
+##
+![Badge](https://img.shields.io/badge/javascript-yellow)
+![Badge](https://img.shields.io/badge/express-orange)
+![Badge](https://img.shields.io/badge/MongoDB-blue)
+![Badge](https://img.shields.io/badge/mongoose-red)
+
+
+
 ## Social Network API
 
 - Module 18 Challenge, NoSQL, MongoDB, Mongoose

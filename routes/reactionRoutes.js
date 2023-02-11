@@ -19,3 +19,12 @@ router.get("/", (req, res) => {
       })
       .catch((err) => res.status(400).json({ error: err.message }));
   });
+
+  // create a new reaction //
+router.post("/", (req, res) => {
+    const reaction = new Reaction(req.body);
+    reaction
+      .save()
+      .then((reaction) => res.json(reaction))
+      .catch((err) => res.status(400).json({ error: err.message }));
+  });

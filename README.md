@@ -81,6 +81,12 @@ npm i
 
 ## Application Screenshot Preview (Insomnia)
 
+[Preview-1](./img/social_network_api_1.png)
+
+##
+
+[Preview-2](./img/social_network_api_2.png)
+
 
 ##
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Thought } = require("../../models/Thought");
 
-// Get all thoughts //
+// Get all thoughts
 router.get("/", async (req, res) => {
   try {
     const thoughts = await Thought.find();
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a single thought by ID //
+// Get a single thought by ID
 router.get("/:id", async (req, res) => {
   try {
     const thought = await Thought.findById(req.params.id);
@@ -25,12 +25,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create a new thought //
+// Create a new thought
 router.post("/", async (req, res) => {
-  const thought = new Thought({
-    text: req.body.text,
-    author: req.body.author,
-  });
+  const { thoughtText, username } = req.body;
+  const thought = new Thought({ thoughtText, username });
   try {
     const savedThought = await thought.save();
     res.status(201).json(savedThought);
@@ -39,12 +37,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update a thought //
+// Update a thought
 router.patch("/:id", async (req, res) => {
   try {
     const updatedThought = await Thought.findByIdAndUpdate(
       req.params.id,
-      { text: req.body.text },
+      { thoughtText: req.body.thoughtText },
       { new: true }
     );
     if (!updatedThought) {
@@ -56,7 +54,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-// Delete a thought //
+// Delete a thought
 router.delete("/:id", async (req, res) => {
   try {
     const deletedThought = await Thought.findByIdAndDelete(req.params.id);
@@ -69,19 +67,19 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.post("/:id/reactions", async (req, res) => {
+// Create a new reaction to a thought
+router.post("/:thoughtId/reactions", async (req, res) => {
+  const { reactionBody, username } = req.body;
+  const { thoughtId } = req.params;
   try {
-    const thought = await Thought.findById(req.params.id);
-    if (!thought) {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      { $push: { reactions: { reactionBody, username } } },
+      { new: true }
+    );
+    if (!updatedThought) {
       return res.status(404).json({ message: "Thought not found" });
     }
-
-    thought.reactions.push({
-      reactionBody: req.body.reactionBody,
-      username: req.body.username,
-    });
-
-    const updatedThought = await thought.save();
     res.json(updatedThought);
   } catch (error) {
     res.status(500).json({ message: error.message });

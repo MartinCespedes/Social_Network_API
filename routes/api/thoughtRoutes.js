@@ -69,4 +69,23 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.post("/:id/reactions", async (req, res) => {
+  try {
+    const thought = await Thought.findById(req.params.id);
+    if (!thought) {
+      return res.status(404).json({ message: "Thought not found" });
+    }
+
+    thought.reactions.push({
+      reactionBody: req.body.reactionBody,
+      username: req.body.username,
+    });
+
+    const updatedThought = await thought.save();
+    res.json(updatedThought);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

@@ -1,11 +1,28 @@
 const mongoose = require("mongoose");
 
-const ThoughtSchema = new mongoose.Schema({
-  text: {
+const { Schema, model } = mongoose;
+
+const reactionSchema = new Schema({
+  reactionBody: {
     type: String,
     required: true,
-    trim: true,
-    maxlength: 280,
+    maxLength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const thoughtSchema = new Schema({
+  thoughtText: {
+    type: String,
+    required: true,
+    maxLength: 280,
   },
   createdAt: {
     type: Date,
@@ -15,29 +32,9 @@ const ThoughtSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reactions: [
-    {
-      reactionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        default: () => new Types.ObjectId(),
-      },
-      reactionBody: {
-        type: String,
-        required: true,
-        maxlength: 280,
-      },
-      username: {
-        type: String,
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
+  reactions: [reactionSchema],
 });
 
-const Thought = mongoose.model("Thought", ThoughtSchema);
+const Thought = model("Thought", thoughtSchema);
 
 module.exports = Thought;

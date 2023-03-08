@@ -1,45 +1,65 @@
 const express = require("express");
 const router = express.Router();
-const Reaction = require("../../models/Reaction");
+const { Thought } = require("../../models/Thought");
 
-// get all reactions //
-router.get("/", (req, res) => {
-  Reaction.find()
-    .then((reactions) => res.json(reactions))
-    .catch((err) => res.status(400).json({ error: err.message }));
+// Create a new reaction to a thought
+router.post("/:thoughtId/reactions", async (req, res) => {
+  const { reactionBody, username } = req.body;
+  const { thoughtId } = req.params;
+  try {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      { $push: { reactions: { reactionBody, username } } },
+      { new: true }
+    );
+    if (!updatedThought) {
+      return res.status(404).json({ message: "Thought not found" });
+    }
+    res.json(updatedThought);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// get reaction by id //
-router.get("/:id", (req, res) => {
-  Reaction.findById(req.params.id)
-    .then((reaction) => {
-      if (!reaction) res.status(404).json({ message: "Reaction not found." });
-      res.json(reaction);
-    })
-    .catch((err) => res.status(400).json({ error: err.message }));
+// Update a reaction
+router.put("/:thoughtId/reactions/:reactionId", async (req, res) => {
+  const { reactionBody } = req.body;
+  const { thoughtId, reactionId } = req.params;
+  try {
+    const thought = await Thought.findById(thoughtId);
+    if (!thought) {
+      return res.status(404).json({ message: "Thought not found" });
+    }
+    const reaction = thought.reactions.id(reactionId);
+    if (!reaction) {
+      return res.status(404).json({ message: "Reaction not found" });
+    }
+    reaction.reactionBody = reactionBody;
+    await thought.save();
+    res.json(thought);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// create a new reaction //
-router.post("/", (req, res) => {
-  const reaction = new Reaction(req.body);
-  reaction
-    .save()
-    .then((reaction) => res.json(reaction))
-    .catch((err) => res.status(400).json({ error: err.message }));
-});
-
-// update an existing reaction //
-router.put("/:id", (req, res) => {
-  Reaction.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((reaction) => res.json(reaction))
-    .catch((err) => res.status(400).json({ error: err.message }));
-});
-
-// delete a reaction //
-router.delete("/:id", (req, res) => {
-  Reaction.findByIdAndRemove(req.params.id)
-    .then((reaction) => res.json({ message: "Reaction deleted." }))
-    .catch((err) => res.status(400).json({ error: err.message }));
+// Delete a reaction
+router.delete("/:thoughtId/reactions/:reactionId", async (req, res) => {
+  const { thoughtId, reactionId } = req.params;
+  try {
+    const thought = await Thought.findById(thoughtId);
+    if (!thought) {
+      return res.status(404).json({ message: "Thought not found" });
+    }
+    const reaction = thought.reactions.id(reactionId);
+    if (!reaction) {
+      return res.status(404).json({ message: "Reaction not found" });
+    }
+    reaction.remove();
+    await thought.save();
+    res.json(thought);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;

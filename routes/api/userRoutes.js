@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
+const getUser = require("../../utils/getUser");
 
 // Get all users //
 router.get("/", async (req, res) => {
@@ -35,18 +36,15 @@ router.post("/", async (req, res) => {
 
 // Update a user //
 router.patch("/:id", getUser, async (req, res) => {
-  if (req.body.username != null) {
-    res.user.username = req.body.username;
-  }
-  if (req.body.email != null) {
-    res.user.email = req.body.email;
-  }
-
+  const update = {
+    username: req.body.username,
+    email: req.body.email,
+  };
   try {
-    const updatedUser = await res.user.save();
-    res.json(updatedUser);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    let doc = await User.findOneAndUpdate(req.params.id, update, { new: true });
+    res.status(200).json(doc);
+  } catch {
+    res.status(400).json({ message: "No user found with this id" });
   }
 });
 
@@ -59,19 +57,5 @@ router.delete("/:id", getUser, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-async function getUser(req, res, next) {
-  try {
-    user = await User.findById(req.params.id);
-    if (user == null) {
-      return res.status(404).json({ message: "Cannot find user" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.user = User;
-  next();
-}
 
 module.exports = router;

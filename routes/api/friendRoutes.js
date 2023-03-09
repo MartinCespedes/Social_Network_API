@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Friend } = require("../../models/Friend");
+const Friend = require("../../models/Friend");
 
 // get all friends
 router.get("/", async (req, res) => {
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 // create a new friend
 router.post("/", async (req, res) => {
   const { friendUsername, userId } = req.body;
-  const newFriend = new Friend({
+  const newFriend = Friend.create({
     friendUsername,
     userId,
   });
@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
 // delete a friend
 router.delete("/:id", async (req, res) => {
   try {
-    await Friend.findByIdAndDelete(req.params.id);
+    await Friend.findOneAndDelete(req.params.id);
     return res.status(200).json({ message: "Friend deleted." });
   } catch (error) {
     return res.status(400).json({ message: error.message });
